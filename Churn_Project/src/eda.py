@@ -34,7 +34,6 @@ def save_target_chart(df: pd.DataFrame) -> None:
     plt.savefig(FIGURES_DIR / "target_distribution.png")
     plt.close()
 
-
 def detect_possible_leakage_columns(df: pd.DataFrame) -> list[str]:
     suspicious_keywords = [
         "churn", "cancel", "closed", "termination", "retention",
