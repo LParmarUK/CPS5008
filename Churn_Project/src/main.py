@@ -1,6 +1,7 @@
 from data_loader import load_data, basic_overview
 from eda import save_missing_values_chart, save_target_chart, detect_possible_leakage_columns
 from sklearn.model_selection import train_test_split
+from preprocess import build_preprocessor
 
 def clean_data(df):
     df.columns = df.columns.str.strip()
@@ -35,7 +36,9 @@ def main():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    print("/nTrain/Test split completed.")
+    preprocessor, numeric_cols, categorical_cols = build_preprocessor(X_train)
+
+    print("Preprocessing pipline created")
 
     leakage = detect_possible_leakage_columns(df)
     print("\n=== POSSIBLE LEAKAGE COLUMNS ===")
