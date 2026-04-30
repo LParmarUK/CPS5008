@@ -3,6 +3,7 @@ from eda import save_missing_values_chart, save_target_chart, detect_possible_le
 from sklearn.model_selection import train_test_split
 from preprocess import build_preprocessor
 from train import build_model_pipelines
+from evaluate import evaluate_model
 
 def clean_data(df):
     df.columns = df.columns.str.strip()
@@ -35,7 +36,7 @@ def main():
     preprocesser, _, _ = build_preprocessor(X_train)
     baseline, rf, gb = build_model_pipelines(preprocesser)
     baseline.fit(X_train, y_train)
-    print("Baseline model trained")
+    evaluate_model(baseline, X_test, y_test, "Baseline")
 
 if __name__ == "__main__":
     main()
