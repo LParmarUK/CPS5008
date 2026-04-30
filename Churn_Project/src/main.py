@@ -13,10 +13,17 @@ def clean_data(df):
 
     return df
 
+def add_freatures(df):
+    if all(col in df.columns for col in ["App Logins", "Portal Logins", "Email Clicks"]):
+        df["Digital_Engagement_Total"] = (
+            df["App Logins"] + df["Portal Logins"] + df["Email Clicks"]
+        )
+    return df
 
 def main():
     df = load_data()
     df = clean_data(df)
+    df = add_freatures(df)
 
     basic_overview(df)
 
