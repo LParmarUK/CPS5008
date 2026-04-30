@@ -2,6 +2,7 @@ from data_loader import load_data, basic_overview
 from eda import save_missing_values_chart, save_target_chart, detect_possible_leakage_columns
 from sklearn.model_selection import train_test_split
 from preprocess import build_preprocessor
+from train import build_model_pipelines
 
 def clean_data(df):
     df.columns = df.columns.str.strip()
@@ -26,24 +27,15 @@ def main():
     df = clean_data(df)
     df = add_freatures(df)
 
-    basic_overview(df)
-
-    save_missing_values_chart(df)
-    save_target_chart(df)
-
     X= df.drop(columns=["Churn"])
     y= df["Churn"]
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    preprocessor, numeric_cols, categorical_cols = build_preprocessor(X_train)
-
-    print("Preprocessing pipline created")
-
-    leakage = detect_possible_leakage_columns(df)
-    print("\n=== POSSIBLE LEAKAGE COLUMNS ===")
-    print(leakage)
-
+    preprocesser, _, _ = build_preprocessor(X_train)
+    baseline, rf, gb = build_model_pipelines(preprocesser)
+    baseline.fit(X_train, y_train)
+    print("Baseline model trained")
 
 if __name__ == "__main__":
     main()
